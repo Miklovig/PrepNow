@@ -1,22 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <meta charset="utf-8">
-  <title>Preppy App</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PrepNow – PrEP Reminder & Logbook</title>
+  <meta name="description" content="Privacy-first PrEP Reminder & Logbook. 100% offline. No accounts, no trackers." />
+  <link rel="icon" href="assets/icon.png" />
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; text-align: center; }
-    .btn { display: inline-block; margin: 20px; padding: 12px 24px; background: #5585b5; color: #fff;
-           text-decoration: none; border-radius: 8px; font-size: 18px; }
-    .coffee { background: #ffdd00; color: #222; }
+    :root{
+      --bg:#f8fcfb; --primary:#5585b5; --border:#e6edf0; --text:#223; --muted:#6b7a8c;
+      --radius:18px; --shadow:0 6px 18px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:inherit}
+    .wrap{max-width:1040px;margin:0 auto;padding:24px}
+    .nav{display:flex;align-items:center;gap:14px}
+    .nav img.logo{width:36px;height:36px;border-radius:50%}
+    .badge{background:#e9f2f9;color:#295b82;border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:12px}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;margin-top:24px}
+    .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero .copy{padding:28px}
+    h1{margin:0 0 10px;font-size:40px;line-height:1.1}
+    p.lead{color:var(--muted);font-size:18px;margin:0 0 18px}
+    .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;border:1px solid var(--border);text-decoration:none;font-weight:600}
+    .btn.primary{background:var(--primary);color:#fff;border-color:transparent}
+    .btn.ghost{background:#fff;color:var(--text)}
+    .btn small{opacity:.8;font-weight:500}
+    .hero img.preview{width:100%;height:auto;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+    .tile{padding:18px}
+    .tile h3{margin:0 0 6px;font-size:18px}
+    .muted{color:var(--muted)}
+    .section{margin-top:54px}
+    .screens{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .screens img{width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow)}
+    .foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:32px 0 10px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px}
+    .note{font-size:13px;color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;gap:8px}
+    .pill svg{width:18px;height:18px}
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr}
+      h1{font-size:34px}
+      .grid{grid-template-columns:1fr}
+      .screens{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
-  <h1>☁️ Preppy App</h1>
-  <p>Privacy-first PrEP reminder & logbook. 100% offline, no trackers.</p>
-  
-  <a class="btn" href="https://github.com/DEINUSER/preppy/releases/latest/download/app-release.apk">⬇️ Download APK</a>
-  <a class="btn coffee" href="https://www.buymeacoffee.com/DEINUSER">☕ Buy me a coffee</a>
-  
-  <p><small>SHA256: <code>hier-dein-hash</code></small></p>
+  <div class="wrap">
+    <!-- Top -->
+    <div class="nav">
+      <img class="logo" src="assets/icon.png" alt="Preppy icon" />
+      <strong>Preppy</strong>
+      <span class="badge pill" id="version-badge">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 16 0" stroke="#295b82" stroke-width="2" stroke-linecap="round"/></svg>
+        v<span id="versionName">1.0.0</span>
+      </span>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="copy card">
+        <span class="badge">Privacy-first • 100% offline • No trackers</span>
+        <h1>PrEP Reminder & Logbook,<br/>gemacht für den Alltag.</h1>
+        <p class="lead">Zuverlässige Erinnerungen (Exact Alarms), sauberes Logbuch, PDF-Export – alles bleibt auf deinem Gerät.</p>
+
+        <div class="cta">
+          <a class="btn primary" id="dl" href="https://github.com/miklovig/PrepNow/releases/latest/download/app-release.apk">
+            ⬇️ APK herunterladen
+          </a>
+          <a class="btn ghost" href="https://www.buymeacoffee.com/DEIN_BMC_NICK">
+            ☕ Buy me a coffee
+          </a>
+          <a class="btn ghost" href="#features">🔎 Features</a>
+        </div>
+        <p class="note" style="margin-top:10px">
+          <span class="pill">🧾 <b>SHA-256</b>:</span>
+          <span class="mono" id="sha">wird mit Release gepostet</span>
+        </p>
+      </div>
+
+      <img class="preview card" src="assets/hero.png" alt="App preview" />
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+      <div class="grid">
+        <div class="card tile">
+          <h3>💊 Pill-Reminders</h3>
+          <p class="muted">Exact Alarms für verlässliche Einnahmezeiten – auch ohne Internet.</p>
+        </div>
+        <div class="card tile">
+          <h3>📓 Logbook</h3>
+          <p class="muted">Einnahmen & Notizen schnell erfassen, jederzeit löschbar.</p>
+        </div>
+        <div class="card tile">
+          <h3>📄 PDF-Report</h3>
+          <p class="muted">Erstelle lokal ein PDF für Arzttermine – keine Cloud, kein Account.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screens -->
+    <section class="section">
+      <h2>Ein Blick in PrepNow</h2>
+      <p class="muted">Leicht, freundlich, ohne Ballast.</p>
+      <div class="screens">
+        <img src="assets/screen-1.png" alt="Screenshot 1" />
+        <img src="assets/screen-2.png" alt="Screenshot 2" />
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="section card tile">
+      <h3>🔒 Datenschutz in kurz</h3>
+      <ul>
+        <li>Keine Accounts, keine Tracker, keine Werbung.</li>
+        <li>Alle Daten bleiben auf deinem Gerät.</li>
+        <li>Du kannst alles jederzeit löschen.</li>
+      </ul>
+      <p class="note">Support? Schreib mir per GitHub Issue oder E-Mail: <a href="mailto:prepnow.app@gmail.com">prepnow.app@gmail.com</a></p>
+    </section>
+
+    <footer class="foot">
+      <span class="note">© <span id="year"></span> PrepNow • Community Project</span>
+      <div class="note">Made with 💙 – wenn dir PrepNow hilft: <a href="https://www.buymeacoffee.com/DEIN_BMC_NICK">☕ buy me a coffee</a></div>
+    </footer>
+  </div>
+
+  <!-- Optional: kleine Helfer für Version/Hash aus latest.json -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // Wenn du eine latest.json im Root hostest, z.B.:
+    // { "versionName":"1.0.3", "url":"<apk-url>", "sha256":"<hash>" }
+    fetch('./latest.json', {cache:'no-store'})
+      .then(r => r.ok ? r.json() : null)
+      .then(j => {
+        if(!j) return;
+        if(j.versionName) document.getElementById('versionName').textContent = j.versionName;
+        if(j.sha256) document.getElementById('sha').textContent = j.sha256;
+        if(j.url) document.getElementById('dl').setAttribute('href', j.url);
+      })
+      .catch(()=>{});
+  </script>
 </body>
 </html>
