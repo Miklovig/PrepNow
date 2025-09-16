@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -10,6 +10,8 @@
     :root{
       --bg:#f8fcfb; --primary:#5585b5; --border:#e6edf0; --text:#223; --muted:#6b7a8c;
       --radius:18px; --shadow:0 6px 18px rgba(0,0,0,.06);
+      --slide-w: clamp(240px, 90vw, 360px);
+      --slide-gap: .75rem;
     }
     *{box-sizing:border-box}
     html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
@@ -34,8 +36,6 @@
     .tile h3{margin:0 0 6px;font-size:18px}
     .muted{color:var(--muted)}
     .section{margin-top:54px}
-    .screens{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-    .screens img{width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow)}
     .foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:32px 0 10px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px}
     .note{font-size:13px;color:var(--muted)}
@@ -45,42 +45,80 @@
       .hero{grid-template-columns:1fr}
       h1{font-size:34px}
       .grid{grid-template-columns:1fr}
-      .screens{grid-template-columns:1fr}
     }
+
+    /* ---- Carousel ---- */
+    .carousel {position: relative;margin-top: 1rem;}
+    .car-viewport{width: var(--slide-w);margin-inline: auto;position: relative;}
+    .car-track {
+      display: grid;grid-auto-flow: column;grid-auto-columns: var(--slide-w);
+      gap: var(--slide-gap);overflow-x: auto;overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;scroll-behavior: smooth;-webkit-overflow-scrolling: touch;
+    }
+    .car-track::-webkit-scrollbar { display: none; }
+    .car-slide {
+      scroll-snap-align: start;scroll-snap-stop: always;aspect-ratio: 9/19.5;
+      background:#f3f6f8;border:1px solid #e6edf0;border-radius:1rem;
+      display:grid;place-items:center;overflow:hidden;
+    }
+    .car-slide img {width:100%;height:100%;object-fit:cover;display:block;}
+    .car-btn {
+      position:absolute;top:50%;translate:0 -50%;z-index:2;border:none;
+      background:rgba(255,255,255,0.85);box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      border-radius:999px;width:36px;height:36px;cursor:pointer;font-size:18px;
+      display:grid;place-items:center;transition:transform .15s ease;
+    }
+    .car-btn:hover {transform:scale(1.06);} .car-btn:active {transform:scale(0.98);}
+    .car-btn.prev{left:-10px;} .car-btn.next{right:-10px;}
+    .car-dots{display:flex;gap:.5rem;justify-content:center;margin-top:.75rem;}
+    .car-dot{width:7px;height:7px;border-radius:999px;background:#cfd8e3;border:none;cursor:pointer;}
+    .car-dot[aria-current="true"]{width:20px;background:#5585b5;}
+    .report-slide{aspect-ratio:auto;} .report-slide img{object-fit:contain;background:#fff;}
+
+    /* Verify section */
+    .verify{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+    .badge-link{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
+      background:#e9f2f9;border:1px solid var(--border);text-decoration:none}
+    .badge-ghost{background:#fff;border:1px solid var(--border);border-radius:999px;padding:6px 10px;cursor:pointer}
+    .badge-link:hover,.badge-ghost:hover{filter:brightness(0.98)}
   </style>
 </head>
 <body>
   <div class="wrap">
     <!-- Top -->
     <div class="nav">
-      <img class="logo" src="assets/icon.png" alt="Preppy icon" />
-      <strong>Preppy</strong>
+      <img class="logo" src="assets/icon.png" alt="PrepNow icon" />
+      <strong>PrepNow</strong>
       <span class="badge pill" id="version-badge">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 16 0" stroke="#295b82" stroke-width="2" stroke-linecap="round"/></svg>
-        v<span id="versionName">1.0.0</span>
+       
+        version<span id="versionName">0.0.0</span>
+        <span class="badge">• Privacy-first • 100% offline • No trackers</span>
       </span>
     </div>
 
     <!-- Hero -->
     <section class="hero">
       <div class="copy card">
-        <span class="badge">Privacy-first • 100% offline • No trackers</span>
-        <h1>PrEP Reminder & Logbook,<br/>gemacht für den Alltag.</h1>
-        <p class="lead">Zuverlässige Erinnerungen (Exact Alarms), sauberes Logbuch, PDF-Export – alles bleibt auf deinem Gerät.</p>
+
+        <h1>PrEP Reminder & Logbook,<br/>made for everyday life.</h1>
+        <p class="lead">Reliable reminders (Exact Alarms), clean logbook, PDF export – all data stays on your device.</p>
 
         <div class="cta">
-          <a class="btn primary" id="dl" href="https://github.com/miklovig/PrepNow/releases/latest/download/app-release.apk">
-            ⬇️ APK herunterladen
+          <a class="btn primary" id="dl" href="#">
+            ⬇️ Download APK
           </a>
           <a class="btn ghost" href="https://buymeacoffee.com/prepnowapph">
             ☕ Buy me a coffee
           </a>
           <a class="btn ghost" href="#features">🔎 Features</a>
         </div>
-        <p class="note" style="margin-top:10px">
-          <span class="pill">🧾 <b>SHA-256</b>:</span>
-          <span class="mono" id="sha">wird mit Release gepostet</span>
-        </p>
+
+        <div class="verify">
+          <span class="note">🔑 SHA-256: <span class="mono" id="sha">loading…</span></span>
+          <a id="vtLink" class="badge badge-link" target="_blank" rel="noopener">🔍 VirusTotal Report</a>
+          <button id="copySha" class="badge badge-ghost" type="button" title="Copy SHA-256">Copy</button>
+          <span id="copyMsg" class="note" aria-live="polite" style="display:none;">Copied ✓</span>
+        </div>
       </div>
 
       <img class="preview card" src="assets/hero.png" alt="App preview" />
@@ -90,61 +128,147 @@
     <section id="features" class="section">
       <div class="grid">
         <div class="card tile">
-          <h3>💊 Pill-Reminders</h3>
-          <p class="muted">Exact Alarms für verlässliche Einnahmezeiten – auch ohne Internet.</p>
+          <h3>💊 Pill Reminders</h3>
+          <p class="muted">Exact Alarms for reliable intake times – even without internet.</p>
         </div>
         <div class="card tile">
           <h3>📓 Logbook</h3>
-          <p class="muted">Einnahmen & Notizen schnell erfassen, jederzeit löschbar.</p>
+          <p class="muted">Quickly record doses & notes, deletable at any time.</p>
         </div>
         <div class="card tile">
-          <h3>📄 PDF-Report</h3>
-          <p class="muted">Erstelle lokal ein PDF für Arzttermine – keine Cloud, kein Account.</p>
+          <h3>📄 PDF Report</h3>
+          <p class="muted">Generate a local PDF for doctor visits – no cloud, no account.</p>
         </div>
       </div>
     </section>
 
-    <!-- Screens -->
-    <section class="section">
-      <h2>Ein Blick in PrepNow</h2>
-      <p class="muted">Leicht, freundlich, ohne Ballast.</p>
-      <div class="screens">
-        <img src="assets/screen-1.png" alt="Screenshot 1" />
-        <img src="assets/screen-2.png" alt="Screenshot 2" />
+    <!-- Screens / Carousel -->
+    <section class="section" aria-labelledby="screens-heading">
+      <h2 id="screens-heading">Screenshots</h2>
+      <p class="muted">Simple, friendly, without clutter.</p>
+
+      <div class="carousel" role="region" aria-label="App Screens Carousel">
+        <div class="car-viewport">
+          <button class="car-btn prev" aria-label="Previous">&#10094;</button>
+          <div class="car-track" id="carTrack" tabindex="0">
+            <figure class="car-slide"><img src="assets/Screen_home.jpeg" alt="Homescreen" loading="lazy" /></figure>
+            <figure class="car-slide"><img src="assets/Screen_risk.jpeg" alt="Risk Input" loading="lazy" /></figure>
+            <figure class="car-slide"><img src="assets/Screen_know.jpeg" alt="Knowledge" loading="lazy" /></figure>
+            <figure class="car-slide"><img src="assets/Screen_cal.jpeg" alt="Calendar" loading="lazy" /></figure>
+            <figure class="car-slide report-slide"><img src="assets/Screen_report.jpeg" alt="PDF Report" loading="lazy" /></figure>
+          </div>
+          <button class="car-btn next" aria-label="Next">&#10095;</button>
+        </div>
+        <div class="car-dots" id="carDots" aria-label="Carousel Navigation"></div>
       </div>
     </section>
 
     <!-- Privacy -->
     <section class="section card tile">
-      <h3>🔒 Datenschutz in kurz</h3>
+      <h3>🔒 Privacy at a glance</h3>
       <ul>
-        <li>Keine Accounts, keine Tracker, keine Werbung.</li>
-        <li>Alle Daten bleiben auf deinem Gerät.</li>
-        <li>Du kannst alles jederzeit löschen.</li>
+        <li>No accounts, no trackers, no ads.</li>
+        <li>All data stays on your device.</li>
+        <li>You can delete everything at any time.</li>
       </ul>
-      <p class="note">Support? Schreib mir per GitHub Issue oder E-Mail: <a href="mailto:prepnow.app@gmail.com">prepnow.app@gmail.com</a></p>
+      <a href="https://www.notion.so/Privacy-Policy-PrepNow-25965c1b8691805dab9cdad87f4e8776">
+        Privacy Policy on Notion
+      </a>
+      <p class="note">Support? Contact via GitHub Issue or email: 
+        <a href="mailto:prepnow.app@gmail.com">prepnow.app@gmail.com</a>
+      </p>
     </section>
 
     <footer class="foot">
-      <span class="note">© <span id="year"></span> PrepNow • Community Project</span>
-      <div class="note">Made with 💙 – wenn dir PrepNow hilft: <a href="https://www.buymeacoffee.com/DEIN_BMC_NICK">☕ buy me a coffee</a></div>
+      <span class="note">© <span id="year"></span> PrepNow • All rights reserved.</span>
+      <div class="note">Made with 💙 — if PrepNow helps you: 
+        <a href="https://buymeacoffee.com/prepnowapph">☕ buy me a coffee</a>
+      </div>
     </footer>
   </div>
 
-  <!-- Optional: kleine Helfer für Version/Hash aus latest.json -->
+  <!-- Carousel Script -->
+  <script>
+    (function () {
+      const track = document.getElementById('carTrack');
+      const slides = Array.from(track.querySelectorAll('.car-slide'));
+      const prevBtn = document.querySelector('.car-btn.prev');
+      const nextBtn = document.querySelector('.car-btn.next');
+      const dotsWrap = document.getElementById('carDots');
+
+      slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        b.className = 'car-dot'; b.type = 'button';
+        b.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        b.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(b);
+      });
+
+      function getIndexFromScroll() {
+        let closest = 0, min = Infinity;
+        const trackRect = track.getBoundingClientRect();
+        slides.forEach((slide, i) => {
+          const r = slide.getBoundingClientRect();
+          const dist = Math.abs(r.left - trackRect.left);
+          if (dist < min) { min = dist; closest = i; }
+        });
+        return closest;
+      }
+      function goTo(index) {
+        const clamped = Math.max(0, Math.min(index, slides.length - 1));
+        slides[clamped].scrollIntoView({behavior:'smooth',inline:'start'});
+        updateDots(clamped);
+      }
+      function updateDots(activeIdx = getIndexFromScroll()) {
+        dotsWrap.querySelectorAll('.car-dot').forEach((d, i) =>
+          i===activeIdx ? d.setAttribute('aria-current','true') : d.removeAttribute('aria-current')
+        );
+      }
+      prevBtn.addEventListener('click', () => goTo(getIndexFromScroll() - 1));
+      nextBtn.addEventListener('click', () => goTo(getIndexFromScroll() + 1));
+      track.addEventListener('scroll', () => requestAnimationFrame(updateDots), {passive:true});
+      updateDots(0);
+    })();
+  </script>
+
+  <!-- SHA + VT handling -->
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Wenn du eine latest.json im Root hostest, z.B.:
-    // { "versionName":"1.0.3", "url":"<apk-url>", "sha256":"<hash>" }
-    fetch('./latest.json', {cache:'no-store'})
-      .then(r => r.ok ? r.json() : null)
-      .then(j => {
-        if(!j) return;
-        if(j.versionName) document.getElementById('versionName').textContent = j.versionName;
-        if(j.sha256) document.getElementById('sha').textContent = j.sha256;
-        if(j.url) document.getElementById('dl').setAttribute('href', j.url);
-      })
-      .catch(()=>{});
+    const vtBase = 'https://www.virustotal.com/gui/file/';
+    const shaSpan = document.getElementById('sha');
+    const vtLink = document.getElementById('vtLink');
+    const copyBtn = document.getElementById('copySha');
+    const copyMsg = document.getElementById('copyMsg');
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+          document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+        }
+        copyMsg.style.display='inline';
+        setTimeout(()=>copyMsg.style.display='none',1500);
+      } catch(e){console.warn(e);}
+    }
+
+    (async () => {
+      try {
+        const r = await fetch('./latest.json',{cache:'no-store'});
+        if(r.ok){
+          const j = await r.json();
+          if(j.versionName) document.getElementById('versionName').textContent=j.versionName;
+          if(j.url) document.getElementById('dl').setAttribute('href',j.url);
+          if(j.sha256){
+            shaSpan.textContent=j.sha256;
+            if(vtLink) vtLink.href=vtBase+j.sha256;
+            if(copyBtn) copyBtn.addEventListener('click',()=>copyText(j.sha256));
+          }
+        }
+      }catch(_){}
+    })();
   </script>
 </body>
 </html>
