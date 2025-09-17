@@ -81,6 +81,11 @@
       background:#e9f2f9;border:1px solid var(--border);text-decoration:none}
     .badge-ghost{background:#fff;border:1px solid var(--border);border-radius:999px;padding:6px 10px;cursor:pointer}
     .badge-link:hover,.badge-ghost:hover{filter:brightness(0.98)}
+    .badge img.badge-img{
+  height:14px; 
+  display:inline-block; 
+  vertical-align:middle;
+}
   </style>
 </head>
 <body>
@@ -118,6 +123,9 @@
           <a id="vtLink" class="badge badge-link" target="_blank" rel="noopener">🔍 VirusTotal Report</a>
           <button id="copySha" class="badge badge-ghost" type="button" title="Copy SHA-256">Copy</button>
           <span id="copyMsg" class="note" aria-live="polite" style="display:none;">Copied ✓</span>
+            <!-- Pure download counter badge -->
+  <img src="https://img.shields.io/github/downloads/miklovig/PrepNow/latest/total.svg" 
+  alt="Download count badge" />
         </div>
       </div>
 
